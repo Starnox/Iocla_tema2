@@ -1,2 +1,2 @@
-break *columnar_transposition
+break *column_loop
 
