@@ -45,10 +45,7 @@ columnar_transposition:
     ;; eax iterate through the column at index ecx
 
 columnar_loop:
-
     xor eax, eax
-    
-    
 
 column_loop:
     ;; index of the current column
@@ -104,7 +101,6 @@ problem:
 no_problem:
 
     pop ebx 
-    
     mov eax, [index]
     inc eax
     mov [index], eax

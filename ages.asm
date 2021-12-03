@@ -1,4 +1,3 @@
-%include "io.mac.asm"
 ; This is your structure
 struc  my_date
     .day: resw 1
@@ -6,11 +5,8 @@ struc  my_date
     .year: resd 1
 endstruc
 
-
 section .text
     global ages
-
-extern printf
 
 ; void ages(int len, struct my_date* present, struct my_date* dates, int* all_ages);
 ages:
@@ -29,9 +25,12 @@ ages:
     ;; FREESTYLE STARTS HERE
 
 main_loop:
+    ;; reset the registers
     xor     eax, eax
     xor     ebx, ebx
-    mov     ax, word[edi + my_date_size * (edx - 1) + my_date.year] ;; get the year
+
+    ;; get the current birth year
+    mov     ax, word[edi + my_date_size * (edx - 1) + my_date.year] 
     mov     bx, word[esi + my_date.year] ;; get the current year
     sub     bx, ax
     
@@ -40,29 +39,34 @@ main_loop:
     cmp     ax, word[esi + my_date.month]
     jl      continue
 
+    ;; check if same month
     cmp     ax, word[esi + my_date.month]
     je      same_month
 
+    ;; the birthday wasn't this year
     dec     bx
     jmp     continue
 
 same_month:
+
+    ;; check the day
     mov     ax, word[edi + my_date_size * (edx - 1) + my_date.day] ;; get the day
     cmp     ax, word[esi + my_date.day]
-    jle      continue
+    jle     continue ;; the birthday took place
 
+
+    ;; the birthday didn't took place
     dec     bx
-
     cmp     bx, 0xffff
     jne     continue
 
     mov     bx, 0
 
 continue:
-
-    ; PRINTF32 `%u\n\x0`, ebx
+    ;; place the result
     mov     [ecx + 4 * (edx - 1)], ebx
 
+    ;; iterate next
     dec     edx
     cmp     edx, 0
     jne     main_loop

@@ -1,0 +1,49 @@
+#### Tema 1 Iocla
+## Elev: Mihailescu Eduard-Florin
+## Grupa: 322CB
+
+### Descriere Generala
+Acest cod are ca scop rezolvarea temei 2 propusa in cadrul cursului de IOCLA
+din anul II, seria CB de la Facultatea de Automatica si Calculatoare.
+Voi descrie modul general de functionare al programelor, detaliile de implementare
+se pot regasi in comentarii. Specific faptul ca tema a obtinut un punctaj
+maxim la rularea locala (100/100)
+
+### Reversed One Time Pad (ROTP)
+Programul ruleaza intr-un loop, astfel incat la fiecare iteratie se stocheaza
+in bl caracterul de la pozitia i din sirul plaintext, in bh caracterul de la pozitia
+(len - i - 1) din sirul key, se efectueaza xor intre cele doua registre, iar rezultatul
+este adaugat la final sirul care trebuie construit -> ciphertext
+
+### Ages
+Se itereaza prin vectorul de zile de nastere ->
+Pentru fiecare zi de nastere, se calculeaza initial diferenta
+de ani dintre data curenta si anul nasterii, stocandu-se rezultatul
+in bx, dupa care se verifica luna -> daca ziua de nastere
+a avut loc deja atunci se trece imediat la urmatoare zi de nastere,
+in caz contrar, daca luna curenta coincide cu luna nasterii, se
+trece la verificarea zilei -> daca ziua de nastere nu a avut loc
+inca, atunci se scade un an din bx, si se verifica sa nu se fi
+trecut sub 0, caz in care rezultatul va fi 0. Se pune rezultatul
+in vector si se trece mai departe.
+
+### Columnar Transposition Cipher
+Se itereaza prin fiecare coloana data de indicele din vectorul key ->
+se stocheaza in variabila globala index, pozitia noului caracter care trebuie
+inserat in stringul final, se calculeaza pozitia caracterului care trebuie
+adaugat cu formula haystack[i * len_cheie + j] , unde i,j sunt indicele liniei
+respectiv al coloanei -> se verifica daca bitul adaugat este unul valid
+-> se trece la urmatorul caracter
+
+### Cache Load Simulation
+Se salveaza in variabile globale parametrii pentru a elibera registrii ->
+Se calculeaza tagul adresei primite ca parametru folosind operatii pe biti
+(cu ajutorul unei masti se reseteaza ultimii 3 biti) ->
+Intr-un loop se cauta tagul calculat anterior in vectorul de taguri ->
+Daca se gaseste tagul atunci se calculeaza adresa din cache de unde vor
+trebui descarcate date folosind din nou o masca pentru a calculca ultimii 3 biti
+ai adresei (formula este cache[index * CACHE_LINE_SIZE + offset]), si se 
+pune in bitul de la adresa reg_address rezultatul
+-> Daca nu se regaseste tagul, atunci se incarca 8 biti de la adresa primita 
+ca parametru in linia cu indexul to_replace a matricei cache si se efectueaza
+pasul de descarcare de mai sus 

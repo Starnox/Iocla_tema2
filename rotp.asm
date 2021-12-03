@@ -1,9 +1,5 @@
-%include "io.mac.asm"
-
 section .text
     global rotp
-
-extern printf
 
 ;; void rotp(char *ciphertext, char *plaintext, char *key, int len);
 rotp:
@@ -21,17 +17,25 @@ rotp:
     ;; TODO: Implment rotp
     ;; FREESTYLE STARTS HERE
 
+    ;; set eax to 0
     xor     eax, eax
 main_loop: 
+    ;; set ebx to 0
     xor     ebx, ebx
+
+    ;; get the i character of plaintext in bl
+    ;; get the len - i - 1 character of key in bh
     mov     bl, [esi + eax]
     mov     bh, [edi + ecx - 1]
+
+    ;; xor the two of them, store the result and increment i
     xor     bl, bh
     mov     byte[edx + eax], bl
     inc     eax
 
     loop    main_loop
 
+    ;; mark the end of the string
     mov     byte[edx + eax], 0
 
     ;; FREESTYLE ENDS HERE
